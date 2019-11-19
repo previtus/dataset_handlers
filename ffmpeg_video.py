@@ -4,11 +4,10 @@ import random
 
 # Use full absolute path here:
 #images_path = "/media/vitek/6C969016968FDEC8/Users/vitek-ntb-win/Desktop"
-images_path = "/home/vitek/Projects/dataset_handlers/DATASETS/inputs_v4"
+images_path = "/home/vitek/Projects/dataset_handlers/DATASETS/inputs_final_session1"
 
 max_num_files = None
-max_num_files = 1000
-#max_num_files = 100
+max_num_files = 1300
 
 duration = 0.2
 output_video_name = 'output_timeOrder.avi'

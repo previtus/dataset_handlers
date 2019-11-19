@@ -18,10 +18,9 @@ from tqdm import tqdm
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-images_path = "/home/vitek/Projects/dataset_handlers/DATASETS/inputs_v4"
+images_path = "/home/vitek/Projects/dataset_handlers/DATASETS/inputs_final_session1"
 max_num_images = 10000
-max_num_images = 1000
-name_result_dumpfile = './features/features_v2.p'
+name_result_dumpfile = './features/features_session1_final.p'
 
 
 
