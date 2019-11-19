@@ -24,7 +24,6 @@ num_images_to_plot = 1000
 #num_images_to_plot = 50
 duration = 0.2
 output_video_name = 'output_tsneOrder_.avi'
-output_video_name = 'output_tsneOrder_TESTDIST.avi'
 
 
 
@@ -111,25 +110,18 @@ grid_image.save(grid_plot_name)
 # ALSO TO VIDEO (from the same TSNE)
 # ... using line by line right now ...
 
-import math
-
 images_by_order = {}
-distances = {}
 for img, grid_pos in tqdm(zip(images, grid_assignment[0])):
     idx_x, idx_y = grid_pos
     idx_i = int(ny*idx_y + idx_x)
 
-    distance_from_lefttop = math.sqrt(idx_y*idx_y + idx_x*idx_x)
-
     print(grid_pos, "=", idx_i)
 
     images_by_order[idx_i] = img
-    distances[idx_i] = distance_from_lefttop
 
 files = []
 keys_sorted = sorted(images_by_order.keys())
-# by dist >>
-#keys_sorted = sorted(distances.values()) ### not werks?
+
 print("keys_sorted", keys_sorted)
 
 for key in keys_sorted:
