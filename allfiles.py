@@ -1,6 +1,6 @@
 import os
 
-def all_files_in(path = '.', file_types = [".jpg", ".png"]):
+def all_files_in(path = '.', file_types = [".jpg", ".png", ".jpeg"]):
     files = []
     # r=root, d=directories, f = files
     for r, d, f in os.walk(path):

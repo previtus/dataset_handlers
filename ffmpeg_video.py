@@ -1,15 +1,32 @@
+import os
 from allfiles import all_files_in
+import random
 
 # Use full absolute path here:
-path = "/home/vitek/Vitek/Projects_local_for_ubuntu/video_grabber_python/"
-path = "/media/vitek/6C969016968FDEC8/Users/vitek-ntb-win/Desktop/NEW_GENS/000-pgan-cctv_prague_Ruzyne_512_30k-preset-v2-1gpu-fp32"
 #path = "/media/vitek/6C969016968FDEC8/Users/vitek-ntb-win/Desktop"
+path = "/home/vitek/Datasets/_ART DATASET/images"
+#path = "/home/vitek/Generated/progressive_growing_of_gans_2nd"
 
-duration = 0.1
+max_num_files = None
+max_num_files = 1000
+#max_num_files = 100
+
+duration = 0.2
+output_video_name = 'output_timeOrder.avi'
+
 
 files = all_files_in(path)
 print("Found", len(files), "images!")
-files.sort()
+
+# Sort by name or by date:
+#files.sort()
+files.sort(key=lambda x: os.path.getmtime(x))
+
+if max_num_files is not None:
+    if max_num_files < len(files):
+        files = [files[i] for i in sorted(random.sample(xrange(len(files)), max_num_files))]
+
+
 # make list formating this:
 
 with open('list_files.txt', 'w') as the_file:
@@ -26,4 +43,6 @@ with open('list_files.txt', 'w') as the_file:
 import os
 import subprocess
 #os.chdir('?')
-subprocess.call(['ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', 'list_files.txt', 'output.avi'])
+#subprocess.call(['ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', 'list_files.txt', 'output.avi'])
+# -vf scale=1024:1024:force_original_aspect_ratio=decrease,pad=1024:1024:1024:1024:color=black,setsar=1 $file; done
+subprocess.call(['ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', 'list_files.txt', '-vf', 'scale=1024:1024:force_original_aspect_ratio=decrease,pad=1024:1024:1024:1024:color=black,setsar=1', output_video_name])

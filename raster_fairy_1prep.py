@@ -12,6 +12,19 @@ from sklearn.decomposition import PCA
 from scipy.spatial import distance
 from tqdm import tqdm
 
+
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+
+
+images_path = './data/101_ObjectCategories'
+images_path = "/home/vitek/Datasets/_ART DATASET/images"
+max_num_images = 10000
+max_num_images = 1000
+name_result_dumpfile = './features/features_art1k.p'
+
+
+
 model = keras.applications.VGG16(weights='imagenet', include_top=True)
 model.summary()
 
@@ -26,17 +39,8 @@ def get_image(path):
 import PIL.Image
 from IPython.display import clear_output, Image, display, HTML
 
-img, x = get_image("./data/kitty.jpg")
-predictions = model.predict(x)
-imshow(img)
-for pred in decode_predictions(predictions)[0]:
-    print("predicted %s with probability %0.3f" % (pred[1], pred[2]))
-
 feat_extractor = Model(inputs=model.input, outputs=model.get_layer("fc2").output)
 feat_extractor.summary()
-
-images_path = './data/101_ObjectCategories'
-max_num_images = 10000
 
 images = [os.path.join(dp, f) for dp, dn, filenames in os.walk(images_path) for f in filenames if os.path.splitext(f)[1].lower() in ['.jpg','.png','.jpeg']]
 if max_num_images < len(images):
@@ -69,6 +73,7 @@ def get_concatenated_images(indexes, thumb_height):
     concat_image = np.concatenate([np.asarray(t) for t in thumbs], axis=1)
     return concat_image
 
+"""
 # do a query on a random image
 query_image_idx = int(len(images) * random.random())
 idx_closest = get_closest_images(query_image_idx)
@@ -84,5 +89,6 @@ matplotlib.pyplot.title("query image (%d)" % query_image_idx)
 matplotlib.pyplot.figure(figsize = (16,12))
 imshow(results_image)
 matplotlib.pyplot.title("result images")
+"""
 
-pickle.dump([images, pca_features], open('./results/features_caltech101.p', 'wb'))
+pickle.dump([images, pca_features], open(name_result_dumpfile, 'wb'))
