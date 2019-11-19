@@ -17,17 +17,21 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 
-name_result_dumpfile = './features/features_art1k.p'
+name_result_dumpfile = './features/features_v2.p'
 tsne_plot_name = "example-tSNE-1k.png"
 grid_plot_name = "example-tSNE-grid.jpg"
-num_images_to_plot = 1000
-#num_images_to_plot = 50
 duration = 0.2
 output_video_name = 'output_tsneOrder_.avi'
 
+#num_images_to_plot = 100
+# nx * ny = 1000, the number of images
+nx = 30
+ny = 30
+num_images_to_plot = nx*ny
 
 
 images, pca_features = pickle.load(open(name_result_dumpfile, 'r'))
+images = [f for f in images if os.path.getsize(f) != 0]
 
 for i, f in zip(images, pca_features)[0:5]:
     print("image: %s, features: %0.2f,%0.2f,%0.2f,%0.2f... "%(i, f[0], f[1], f[2], f[3]))
@@ -64,16 +68,14 @@ full_image.save(tsne_plot_name)
 
 import rasterfairy
 
-# nx * ny = 1000, the number of images
-nx = 40
-ny = 25
 
 # assign to grid
-grid_assignment = rasterfairy.transformPointCloud2D(tsne, target=(nx, ny))
+print("about to call rasterfairy.transformPointCloud2D")
+grid_assignment = rasterfairy.transformPointCloud2D(tsne, target=(nx, ny), autoAdjustCount=True)
 print(grid_assignment[0].shape)
 
-tile_width = 72
-tile_height = 56
+tile_width = 6*72
+tile_height = 6*56
 
 full_width = tile_width * nx
 full_height = tile_height * ny

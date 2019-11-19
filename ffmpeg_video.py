@@ -3,9 +3,8 @@ from allfiles import all_files_in
 import random
 
 # Use full absolute path here:
-#path = "/media/vitek/6C969016968FDEC8/Users/vitek-ntb-win/Desktop"
-path = "/home/vitek/Datasets/_ART DATASET/images"
-#path = "/home/vitek/Generated/progressive_growing_of_gans_2nd"
+#images_path = "/media/vitek/6C969016968FDEC8/Users/vitek-ntb-win/Desktop"
+images_path = "/home/vitek/Projects/dataset_handlers/DATASETS/inputs_v4"
 
 max_num_files = None
 max_num_files = 1000
@@ -15,12 +14,15 @@ duration = 0.2
 output_video_name = 'output_timeOrder.avi'
 
 
-files = all_files_in(path)
+files = all_files_in(images_path)
 print("Found", len(files), "images!")
 
 # Sort by name or by date:
 #files.sort()
 files.sort(key=lambda x: os.path.getmtime(x))
+
+# sort out broken ones
+files = [f for f in files if os.path.getsize(f) != 0]
 
 if max_num_files is not None:
     if max_num_files < len(files):

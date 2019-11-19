@@ -18,12 +18,10 @@ from tqdm import tqdm
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-
-images_path = './data/101_ObjectCategories'
-images_path = "/home/vitek/Datasets/_ART DATASET/images"
+images_path = "/home/vitek/Projects/dataset_handlers/DATASETS/inputs_v4"
 max_num_images = 10000
 max_num_images = 1000
-name_result_dumpfile = './features/features_art1k.p'
+name_result_dumpfile = './features/features_v2.p'
 
 
 
@@ -48,6 +46,9 @@ images = [os.path.join(dp, f) for dp, dn, filenames in os.walk(images_path) for 
 if max_num_images < len(images):
     images = [images[i] for i in sorted(random.sample(xrange(len(images)), max_num_images))]
 
+images = [f for f in images if os.path.getsize(f) != 0]
+
+
 print("keeping %d images to analyze" % len(images))
 
 features = []
@@ -57,7 +58,8 @@ for image_path in tqdm(images):
     features.append(feat)
 
 features = np.array(features)
-pca = PCA(n_components=300)
+n_comp = min(300, len(features))
+pca = PCA(n_components=n_comp)
 pca.fit(features)
 pca_features = pca.transform(features)
 
